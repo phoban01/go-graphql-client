@@ -57,7 +57,7 @@ func TestClient_Query_partialDataWithErrorResponse(t *testing.T) {
 		t.Fatal("got error: nil, want: non-nil")
 	}
 
-	err = client.Query(context.Background(), &q, nil)
+	_, err = client.Query(context.Background(), &q, nil)
 	if err == nil {
 		t.Fatal("got error: nil, want: non-nil")
 	}
@@ -107,7 +107,7 @@ func TestClient_Query_partialDataRawQueryWithErrorResponse(t *testing.T) {
 			ID graphql.ID
 		} `graphql:"node2: node(id: \"NotExist\")"`
 	}
-	err := client.Query(context.Background(), &q, nil)
+	_, err := client.Query(context.Background(), &q, nil)
 	if err == nil {
 		t.Fatal("got error: nil, want: non-nil\n")
 	}
@@ -123,7 +123,7 @@ func TestClient_Query_partialDataRawQueryWithErrorResponse(t *testing.T) {
 
 	// test internal error data
 	client = client.WithDebug(true)
-	err = client.Query(context.Background(), &q, nil)
+	_, err = client.Query(context.Background(), &q, nil)
 	if err == nil {
 		t.Fatal("got error: nil, want: non-nil")
 	}
@@ -162,7 +162,7 @@ func TestClient_Query_noDataWithErrorResponse(t *testing.T) {
 			Name graphql.String
 		}
 	}
-	err := client.Query(context.Background(), &q, nil)
+	_, err := client.Query(context.Background(), &q, nil)
 	if err == nil {
 		t.Fatal("got error: nil, want: non-nil")
 	}
@@ -180,7 +180,7 @@ func TestClient_Query_noDataWithErrorResponse(t *testing.T) {
 
 	// test internal error data
 	client = client.WithDebug(true)
-	err = client.Query(context.Background(), &q, nil)
+	_, err = client.Query(context.Background(), &q, nil)
 	if err == nil {
 		t.Fatal("got error: nil, want: non-nil")
 	}
@@ -212,7 +212,7 @@ func TestClient_Query_errorStatusCode(t *testing.T) {
 			Name graphql.String
 		}
 	}
-	err := client.Query(context.Background(), &q, nil)
+	_, err := client.Query(context.Background(), &q, nil)
 	if err == nil {
 		t.Fatal("got error: nil, want: non-nil")
 	}
@@ -233,7 +233,7 @@ func TestClient_Query_errorStatusCode(t *testing.T) {
 
 	// test internal error data
 	client = client.WithDebug(true)
-	err = client.Query(context.Background(), &q, nil)
+	_, err = client.Query(context.Background(), &q, nil)
 	if err == nil {
 		t.Fatal("got error: nil, want: non-nil")
 	}
@@ -273,7 +273,7 @@ func TestClient_Query_emptyVariables(t *testing.T) {
 			Name string
 		}
 	}
-	err := client.Query(context.Background(), &q, map[string]interface{}{})
+	_, err := client.Query(context.Background(), &q, map[string]interface{}{})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -303,7 +303,7 @@ func TestClient_Query_ignoreFields(t *testing.T) {
 			Ignored string `graphql:"-"`
 		}
 	}
-	err := client.Query(context.Background(), &q, map[string]interface{}{})
+	_, err := client.Query(context.Background(), &q, map[string]interface{}{})
 	if err != nil {
 		t.Fatal(err)
 	}

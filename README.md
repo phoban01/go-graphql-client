@@ -3,7 +3,7 @@ go-graphql-client
 
 [![Build Status](https://travis-ci.org/hasura/go-graphql-client.svg?branch=master)](https://travis-ci.org/hasura/go-graphql-client.svg?branch=master) [![GoDoc](https://godoc.org/github.com/hasura/go-graphql-client?status.svg)](https://pkg.go.dev/github.com/hasura/go-graphql-client)
 
-**Preface:** This is a fork of `https://github.com/shurcooL/graphql` with extended features (subscription client, named operation)
+**Preface:** This is a fork of `https://github.com/hasura/graphql` that returns the http.Response so that you can do something with status codes.
 
 The subscription client follows Apollo client specification https://github.com/apollographql/subscriptions-transport-ws/blob/master/PROTOCOL.md, using websocket protocol with https://github.com/nhooyr/websocket, a minimal and idiomatic WebSocket library for Go.
 
@@ -40,7 +40,7 @@ For more information, see package [`github.com/shurcooL/githubv4`](https://githu
 	- [Directories](#directories)
 	- [References](#references)
 	- [License](#license)
-  
+
 ## Installation
 
 `go-graphql-client` requires Go version 1.13 or later.
@@ -202,7 +202,7 @@ struct {
 //		 login
 //		 createdAt
 //		 databaseId
-//   }	
+//   }
 // }
 
 struct {
@@ -492,7 +492,7 @@ client := graphql.NewSubscriptionClient("wss://example.com/graphql").
 ```Go
 client.
 	//  write timeout of websocket client
-	WithTimeout(time.Minute). 
+	WithTimeout(time.Minute).
 	// When the websocket server was stopped, the client will retry connecting every second until timeout
 	WithRetryTimeout(time.Minute).
 	// sets loging function to print out received messages. By default, nothing is printed
@@ -743,11 +743,11 @@ func ConstructQuery(v interface{}, variables map[string]interface{}, options ...
 func ConstructMutation(v interface{}, variables map[string]interface{}, options ...Option) (string, error)
 
 // ConstructSubscription build GraphQL subscription string from struct and variables
-func ConstructSubscription(v interface{}, variables map[string]interface{}, options ...Option) (string, error) 
+func ConstructSubscription(v interface{}, variables map[string]interface{}, options ...Option) (string, error)
 
 // UnmarshalGraphQL parses the JSON-encoded GraphQL response data and stores
 // the result in the GraphQL query data structure pointed to by v.
-func UnmarshalGraphQL(data []byte, v interface{}) error 
+func UnmarshalGraphQL(data []byte, v interface{}) error
 ```
 
 Directories

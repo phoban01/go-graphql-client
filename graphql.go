@@ -42,28 +42,28 @@ func NewClient(url string, httpClient *http.Client) *Client {
 // Query executes a single GraphQL query request,
 // with a query derived from q, populating the response into it.
 // q should be a pointer to struct that corresponds to the GraphQL schema.
-func (c *Client) Query(ctx context.Context, q interface{}, variables map[string]interface{}, options ...Option) error {
+func (c *Client) Query(ctx context.Context, q interface{}, variables map[string]interface{}, options ...Option) (*http.Response, error) {
 	return c.do(ctx, queryOperation, q, variables, options...)
 }
 
 // NamedQuery executes a single GraphQL query request, with operation name
 //
 // Deprecated: this is the shortcut of Query method, with NewOperationName option
-func (c *Client) NamedQuery(ctx context.Context, name string, q interface{}, variables map[string]interface{}, options ...Option) error {
+func (c *Client) NamedQuery(ctx context.Context, name string, q interface{}, variables map[string]interface{}, options ...Option) (*http.Response, error) {
 	return c.do(ctx, queryOperation, q, variables, append(options, OperationName(name))...)
 }
 
 // Mutate executes a single GraphQL mutation request,
 // with a mutation derived from m, populating the response into it.
 // m should be a pointer to struct that corresponds to the GraphQL schema.
-func (c *Client) Mutate(ctx context.Context, m interface{}, variables map[string]interface{}, options ...Option) error {
+func (c *Client) Mutate(ctx context.Context, m interface{}, variables map[string]interface{}, options ...Option) (*http.Response, error) {
 	return c.do(ctx, mutationOperation, m, variables, options...)
 }
 
 // NamedMutate executes a single GraphQL mutation request, with operation name
 //
 // Deprecated: this is the shortcut of Mutate method, with NewOperationName option
-func (c *Client) NamedMutate(ctx context.Context, name string, m interface{}, variables map[string]interface{}, options ...Option) error {
+func (c *Client) NamedMutate(ctx context.Context, name string, m interface{}, variables map[string]interface{}, options ...Option) (*http.Response, error) {
 	return c.do(ctx, mutationOperation, m, variables, append(options, OperationName(name))...)
 }
 
@@ -229,7 +229,7 @@ func (c *Client) doRaw(ctx context.Context, op operationType, v interface{}, var
 }
 
 // do executes a single GraphQL operation and unmarshal json.
-func (c *Client) do(ctx context.Context, op operationType, v interface{}, variables map[string]interface{}, options ...Option) error {
+func (c *Client) do(ctx context.Context, op operationType, v interface{}, variables map[string]interface{}, options ...Option) (*http.Response, error) {
 	data, resp, respBuf, errs := c.buildAndRequest(ctx, op, v, variables, options...)
 
 	if data != nil {
@@ -244,10 +244,10 @@ func (c *Client) do(ctx context.Context, op operationType, v interface{}, variab
 	}
 
 	if len(errs) > 0 {
-		return errs
+		return resp, errs
 	}
 
-	return nil
+	return resp, nil
 }
 
 // Returns a copy of the client with the request modifier set. This allows you to reuse the same
